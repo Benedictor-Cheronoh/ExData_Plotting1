@@ -1,0 +1,28 @@
+getwd()
+#dowload
+download.file("https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip",destfile = "power_consumption.zip")
+
+dat <- subset(tmp, Date == "1/2/2007"| Date == "2/2/2007")
+download_data <- function() {
+  fileURL <- "https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip"
+  temp <- tempfile()
+  download.file(fileURL, temp, method = "curl")
+  unzip(temp) # Extracts the data
+  unlink(temp) # Deletes the zip
+}
+
+# # Install and load the required packages for this script
+if(system.file(package = "dplyr") == "") install.packages("dplyr", quiet = TRUE)
+library(dplyr, quietly = TRUE)
+# Reading the power consumption file
+fileName <- "household_power_consumption.txt"
+tmp <- read.table(fileName, header = TRUE, sep = ";", na.strings = "?")
+
+fileName <- data.table::fread(input = "household_power_consumption.txt"
+                             , na.strings="?"
+fileName[, Global_active_power := lapply(.SD, as.numeric), .SDcols = c("Global_active_power")]
+library(lubridate)
+file_name <- "household_power_consumption.txt"
+data <- read.table(file_name, header = TRUE, sep = ";", dec = ".", na.strings = "?")
+
+
