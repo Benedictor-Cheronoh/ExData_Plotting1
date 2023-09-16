@@ -6,9 +6,18 @@
 -calculate a rough estimate of how much memory the dataset will require in memory before reading into R. Make sure your computer has enough
 memory (most modern computers should be fine).
   - data from the dates 2007-02-01 and 2007-02-02. 
+# subset the dataset to data when Date between 2007-02-01 & 2007-02-02
+data <- subset(data, subset = (Date >= "2007-02-01" & Date <= "2007-02-02"))
+
+
  -convert the Date and Time variables to Date/Time classes in R using the `strptime()` and `as.Date()`
 functions.
+# add variable data time that with date & time both
+data$datetime <- strptime(paste(data$Date, data$Time), "%Y-%m-%d %H:%M:%S")
+
   - Note that in this dataset missing values are coded as `?`.
+
+data$datetime <- as.POSIXct(data$datetime)
 
 ```{r, eval = FALSE}
 download.file('https://d396qusza40orc.cloudfront.net/exdata%2Fdata%2Fhousehold_power_consumption.zip',
@@ -45,7 +54,11 @@ include the code that creates the PNG file.
 hist(rawData$GlobalActivePower, col = 'red',
      main = 'Global Active Power',
      xlab = 'Global Active Power (kilowatts)')
-#dev.off()
+
+
+# Save plot to png file plot1.png with width & height equal 480px
+dev.copy(png, file = "plot1.png", width=480, height=480)
+dev.off()
 ```
 
 ### Plot 2
@@ -53,6 +66,10 @@ hist(rawData$GlobalActivePower, col = 'red',
 #png('plot2.png', width = 480, height = 480)
 plot(x = rawData$DateTime, y = rawData$GlobalActivePower, 
      type = 'l', xlab = NA, ylab = 'Global Active Power (kilowatts)')
+
+# Save plot2
+dev.copy(png, file = "plot2.png", height = 480, width = 480)
+
 #dev.off()
 ```
 
@@ -67,24 +84,27 @@ legend('topright',
        legend = c('Sub_metering_1', 'Sub_metering_2', 'Sub_metering_3'),
        col = c('black', 'red', 'blue'),
        lwd = 1)
-#dev.off()
+
+# Save plot3
+dev.copy(png, file = "plot3.png", height = 480, width = 480)
+dev.off()
 ```
 
-### Plot 4
+### Plot 4(grid)
 ```{r}
 #png('plot4.png', width = 480, height = 480)
 par(mfrow = c(2, 2)) 
   #plots from left to right, top to bottom (since you used mfrow vs mfcol)
 
-#plot 4a = plot 1
+#plot 
 plot(x = rawData$DateTime, y = rawData$GlobalActivePower, 
      type = 'l', xlab = NA, ylab = 'Global Active Power')
 
-#plot 4b
+#plot 
 plot(x = rawData$DateTime, y = rawData$Voltage, 
      type = 'l', xlab = 'datetime', ylab = 'Voltage')
 
-#plot 4c = plot 3
+#plot
 plot(x = rawData$DateTime, y = rawData$SubMetering1, type = 'l',
      xlab = NA, ylab = 'Energy sub metering')
 lines(x = rawData$DateTime, y = rawData$SubMetering2, col = 'red')
@@ -94,9 +114,12 @@ legend('topright',
        col = c('black', 'red', 'blue'),
        lwd = 1, bty = 'n')
 
-#plot 4d
+#plot 
 plot(x = rawData$DateTime, y = rawData$GlobalReactivePower, type = 'l',
      xlab = 'datetime', ylab = 'Global_reactive_power')
 
-#dev.off()
+# Save to plot4.png file
+
+dev.copy(png, "plot4.png", width=480, height=480)
+dev.off()
 ```
